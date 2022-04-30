@@ -1,0 +1,22 @@
+@page
+@model DetailsModel
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DSRProject</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+
+<div class="text-center">
+    @if(Model.Courses.Count() == 0) {
+        <p> No data </p>
+    }
+    <ul class="list-group">
+        @foreach (var course in Model.Courses) {
+            <div class="form-check" style="display: flex">
+                <p>hello</p>
+            </div>
+        }
+    </ul>
+</div>
