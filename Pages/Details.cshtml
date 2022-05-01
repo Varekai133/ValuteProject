@@ -21,17 +21,31 @@
         <p> No data </p>
     }
     <ul class="list-group">
-        @foreach (var course in Model.Courses) {
-            <div class="form-check" style="display: flex">
-                <p>@course.Valute.Name</p>
-                <p>@course.Value</p>
-                @{
+        <p>@Model.Courses.ElementAt(0).Valute.Name</p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                <th scope="col">Дата</th>
+                <th scope="col">Курс</th>
+                </tr>
+            </thead>
+            @foreach (var course in Model.Courses) {
+            @* <div class="form-check" style="display: flex"> *@
+                @* <p>@course.Valute.Name</p>
+                <p>@course.Value</p> *@
+                    <tbody>
+                        <tr>
+                        <th scope="row">@course.Date.ToShortDateString()</th>
+                        <td>@course.Value</td>
+                        </tr>
+                    </tbody>
+                @* @{ *@
                     values.Add(@course.Value);
                     dates.Add(@course.Date);
                     valuteName = @course.Valute.Name;
                 }
-            </div>
-        }
+                </table>
+            @* </div> *@
     </ul>
     <div id = "test"></div>
     <div class="container my-4">
