@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<HttpClient>();
 builder.Services.AddDbContext<ValuteDbContext>(o => o.UseSqlite("filename=Data/Database/Valute.db"));
 
 var app = builder.Build();

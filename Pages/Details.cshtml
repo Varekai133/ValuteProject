@@ -94,10 +94,10 @@
         var myLineChart = new Chart(ctxL, {
         type: 'line',
         data: {
-            labels: datesArray,
+            labels: datesArray.reverse(),
             datasets: [{
                 label: ASCIINameWithSpace,
-                data: valuesArray,
+                data: valuesArray.reverse(),
                 backgroundColor: [
                 'rgba(105, 0, 132, .2)',
                 ],

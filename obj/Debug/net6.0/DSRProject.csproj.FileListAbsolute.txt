@@ -52,3 +52,4 @@ E:\DSRProj\DSRProject\obj\Debug\net6.0\DSRProject.dll
 E:\DSRProj\DSRProject\obj\Debug\net6.0\ref\DSRProject.dll
 E:\DSRProj\DSRProject\obj\Debug\net6.0\DSRProject.pdb
 E:\DSRProj\DSRProject\obj\Debug\net6.0\DSRProject.genruntimeconfig.cache
+E:\DSRProj\DSRProject\bin\Debug\net6.0\Newtonsoft.Json.dll
