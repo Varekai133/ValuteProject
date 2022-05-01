@@ -1,7 +1,9 @@
 @page
 @model DetailsModel
 @{
-    float message = 0;
+    List<float> values = new List<float>();
+    List<DateTime> dates = new List<DateTime>();
+    string valuteName = " ";
 }
 <head>
     <meta charset="utf-8" />
@@ -24,7 +26,9 @@
                 <p>@course.Valute.Name</p>
                 <p>@course.Value</p>
                 @{
-                    message = course.Value;
+                    values.Add(@course.Value);
+                    dates.Add(@course.Date);
+                    valuteName = @course.Valute.Name;
                 }
             </div>
         }
@@ -39,14 +43,47 @@
 <script>
     $(document).ready(function() {
         @* var a = Math.floor(@message); *@
+        var valuesArray = [];
+        var datesArray = [];
+        @foreach (var d in values)
+        {
+            @:valuesArray.push("@d".replace(",", "."));
+        }
+        @foreach (var d in dates)
+        {
+            @:datesArray.push("@d".split(' ')[0]);
+        }
+        var sequence = '@valuteName'
+        var spaceIndex = sequence.indexOf(' ') / 7;
+        var charCode = sequence.split(/[;\s]+/g)
+            .filter((v) => v)
+            .map((v) => Number.parseInt(v.replace(/&#/, '0')))
+        var ASCIIName = String.fromCharCode(...charCode)
+        var ASCIINameWithSpace = ASCIIName.substring(0, spaceIndex) + " " + ASCIIName.substring(spaceIndex, ASCIIName.length)
+        console.log(ASCIINameWithSpace)
+        @* console.log(@valuteName.ToString()); *@
+        @* var i = 0;
+        var v = '@message[0]'.replace(",", ".");
+        console.log(v); *@
+        @* var result = [];
+        for (var i = 0; i < 3; i++) {
+            console.log(i);
+            var k = [@message[0]];
+            var a = "";
+            a = a.concat(k[0], ".", k[1]);
+            var b = parseFloat(a);
+            result[i] = b;
+        }
+        console.log(result); *@
+        @* var t = [10, 20, 55, 102, 20, 25]; *@
         var ctxL = document.getElementById("lineChart").getContext('2d');
         var myLineChart = new Chart(ctxL, {
         type: 'line',
         data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            labels: datesArray,
             datasets: [{
-                label: "My First dataset",
-                data: [10, 20, 55, 102, 20, 25],
+                label: ASCIINameWithSpace,
+                data: valuesArray,
                 backgroundColor: [
                 'rgba(105, 0, 132, .2)',
                 ],
@@ -55,7 +92,7 @@
                 ],
                 borderWidth: 2
             },
-            {
+            @* {
                 label: "My Second dataset",
                 data: [28, 48, 40, 19, 86, 27, 90],
                 backgroundColor: [
@@ -65,7 +102,7 @@
                 'rgba(0, 10, 130, .7)',
                 ],
                 borderWidth: 2
-            }
+            } *@
             ]
         },
         options: {
