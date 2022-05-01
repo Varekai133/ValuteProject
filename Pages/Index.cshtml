@@ -15,7 +15,7 @@
         @foreach (var valute in Model.Valutes) {
             <div class="form-check" style="display: flex">
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <a href="/Details?CharCode=@valute.CharCode" class="link-primary" style="margin-left: 15px;">@valute.Name</a>
+                <a href="/Details?ValuteId=@valute.ValuteId" class="link-primary" style="margin-left: 15px;">@valute.Name</a>
             </div>
         }
     </ul>
