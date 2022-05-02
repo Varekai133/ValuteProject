@@ -17,40 +17,49 @@ public class DetailsModel : PageModel
     private readonly ValuteDbContext _context;
     private HttpClient _client;
     public IEnumerable<Course> Courses { get; set; } = Enumerable.Empty<Course>();
+    [BindProperty]
+    public DateTime firstDate { get; set; }
+    [BindProperty]
+    public DateTime secondDate { get; set; }
     public DetailsModel(ValuteDbContext context, HttpClient client) {
         _context = context;
         _client = client;
     }
     public void OnGet(string valuteId) {
-        var coursesInDb = _context.Courses.Where(c => c.Valute.ValuteId == valuteId)
+        secondDate = DateTime.UtcNow.Date;
+        firstDate = secondDate.AddDays(-30);
+        GetRequiredCourses(valuteId);
+    }
+    public void OnPost(string valuteId) {
+        GetRequiredCourses(valuteId);
+    }
+    public void GetRequiredCourses(string valuteId) {
+        var listOfDates = _context.Courses
+            .Where(c => c.Valute.ValuteId == valuteId)
+            .Where(v => (v.Date > firstDate) && (v.Date < secondDate))
+            .Select(e => e.Date)
             .OrderByDescending(o => o.Date).ToList();
-        var listOfDates = _context.Courses.Where(c => c.Valute.ValuteId == valuteId).Select(e => e.Date)
-            .OrderByDescending(o => o.Date).ToList();
-        if (coursesInDb.Count() < 22) {
-            try {
-                DowloandNewCoursesByDefault(valuteId, listOfDates);
-            }
-            catch (Exception ex) {
-
-            }
+        try {
+            DowloandNewCourses(valuteId, listOfDates);
         }
-        coursesInDb = _context.Courses.Where(c => c.Valute.ValuteId == valuteId)
-            .OrderByDescending(o => o.Date).ToList();
-        var t = _context.Valutes.Where(c => c.ValuteId == valuteId).ToList();
-        foreach(var v in coursesInDb) {
-            v.Valute = t.Where(c => c.ValuteId == v.Valute.ValuteId).First();
+        catch (Exception ex) {
+            // exception
         }
-    
+        var coursesInDb = _context.Courses
+            .Where(c => c.Valute.ValuteId == valuteId)
+            .Where(v => (v.Date > firstDate) && (v.Date < secondDate))
+            .OrderByDescending(o => o.Date).ToList();
+        var listOfValutes = _context.Valutes
+            .Where(c => c.ValuteId == valuteId).ToList();
+        foreach(var course in coursesInDb) {
+            course.Valute = listOfValutes.Where(c => c.ValuteId == course.Valute.ValuteId).First();
+        }
         Courses = coursesInDb;
     }
-    public void DowloandNewCoursesByDefault(string valuteId, List<DateTime> listOfDates) {
-        DateTime currentDate = DateTime.UtcNow.Date;
-        string firstDate = currentDate.ToString("dd.MM.yyyy");
-        string secondDate = currentDate.AddDays(-30).ToString("dd.MM.yyyy");
-        DowloandNewCourses(valuteId, listOfDates, firstDate, secondDate);
-    }
-    public void DowloandNewCourses(string valuteId, List<DateTime> listOfDates, string firstDate, string secondDate) {
-        var response = _client.GetAsync($"https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={secondDate}&date_req2={firstDate}&VAL_NM_RQ={valuteId}").Result;
+    public void DowloandNewCourses(string valuteId, List<DateTime> listOfDates) {
+        string firstDateCourse = firstDate.ToString("dd.MM.yyyy");
+        string secondDateCourse = secondDate.ToString("dd.MM.yyyy");
+        var response = _client.GetAsync($"https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={firstDateCourse}&date_req2={secondDateCourse}&VAL_NM_RQ={valuteId}").Result;
 
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         Encoding.GetEncoding("windows-1254");
