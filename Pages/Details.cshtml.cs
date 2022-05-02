@@ -18,16 +18,16 @@ public class DetailsModel : PageModel
     private HttpClient _client;
     public IEnumerable<Course> Courses { get; set; } = Enumerable.Empty<Course>();
     [BindProperty]
-    public DateTime firstDate { get; set; }
+    public DateTime FirstDate { get; set; }
     [BindProperty]
-    public DateTime secondDate { get; set; }
+    public DateTime SecondDate { get; set; }
     public DetailsModel(ValuteDbContext context, HttpClient client) {
         _context = context;
         _client = client;
     }
     public void OnGet(string valuteId) {
-        secondDate = DateTime.UtcNow.Date;
-        firstDate = secondDate.AddDays(-30);
+        SecondDate = DateTime.UtcNow.Date;
+        FirstDate = SecondDate.AddDays(-30);
         GetRequiredCourses(valuteId);
     }
     public void OnPost(string valuteId) {
@@ -36,7 +36,7 @@ public class DetailsModel : PageModel
     public void GetRequiredCourses(string valuteId) {
         var listOfDates = _context.Courses
             .Where(c => c.Valute.ValuteId == valuteId)
-            .Where(v => (v.Date > firstDate) && (v.Date < secondDate))
+            .Where(v => (v.Date > FirstDate) && (v.Date < SecondDate))
             .Select(e => e.Date)
             .OrderByDescending(o => o.Date).ToList();
         try {
@@ -47,7 +47,7 @@ public class DetailsModel : PageModel
         }
         var coursesInDb = _context.Courses
             .Where(c => c.Valute.ValuteId == valuteId)
-            .Where(v => (v.Date > firstDate) && (v.Date < secondDate))
+            .Where(v => (v.Date > FirstDate) && (v.Date < SecondDate))
             .OrderByDescending(o => o.Date).ToList();
         var listOfValutes = _context.Valutes
             .Where(c => c.ValuteId == valuteId).ToList();
@@ -57,8 +57,8 @@ public class DetailsModel : PageModel
         Courses = coursesInDb;
     }
     public void DowloandNewCourses(string valuteId, List<DateTime> listOfDates) {
-        string firstDateCourse = firstDate.ToString("dd.MM.yyyy");
-        string secondDateCourse = secondDate.ToString("dd.MM.yyyy");
+        string firstDateCourse = FirstDate.ToString("dd.MM.yyyy");
+        string secondDateCourse = SecondDate.ToString("dd.MM.yyyy");
         var response = _client.GetAsync($"https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={firstDateCourse}&date_req2={secondDateCourse}&VAL_NM_RQ={valuteId}").Result;
 
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
