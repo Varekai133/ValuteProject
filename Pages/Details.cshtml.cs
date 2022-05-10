@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using DSRProject.Servicies;
 // using Windows.Storage.Streams;
 
 namespace DSRProject.Pages;
@@ -21,45 +22,35 @@ public class DetailsModel : PageModel
     public DateTime FirstDate { get; set; }
     [BindProperty]
     public DateTime SecondDate { get; set; }
-    public DetailsModel(CurrencyDbContext context, HttpClient client) {
+    private readonly ICurrenciesRepository _currenciesRepository;
+    public DetailsModel(CurrencyDbContext context, HttpClient client, ICurrenciesRepository currenciesRepository) {
         _context = context;
         _client = client;
+        _currenciesRepository = currenciesRepository;
     }
-    public void OnGet(string valuteId) {
+    public void OnGet(string currencyId) {
         SecondDate = DateTime.UtcNow.Date;
         FirstDate = SecondDate.AddDays(-30);
-        GetRequiredCourses(valuteId);
+        GetRequiredCourses(currencyId);
     }
-    public void OnPost(string valuteId) {
-        GetRequiredCourses(valuteId);
+    public void OnPost(string currencyId) {
+        GetRequiredCourses(currencyId);
     }
-    public void GetRequiredCourses(string valuteId) {
-        var listOfDates = _context.Courses
-            .Where(c => c.Currency.CurrencyId == valuteId)
-            .Where(v => (v.Date > FirstDate) && (v.Date < SecondDate))
-            .Select(e => e.Date)
-            .OrderByDescending(o => o.Date).ToList();
+    public void GetRequiredCourses(string currencyId) {
+        var listOfDates = _currenciesRepository.GetDates(currencyId, FirstDate, SecondDate);
         try {
-            DowloandNewCourses(valuteId, listOfDates);
+            DowloandNewCourses(currencyId, listOfDates);
         }
         catch (Exception ex) {
             // exception
         }
-        var coursesInDb = _context.Courses
-            .Where(c => c.Currency.CurrencyId == valuteId)
-            .Where(v => (v.Date > FirstDate) && (v.Date < SecondDate))
-            .OrderByDescending(o => o.Date).ToList();
-        var listOfValutes = _context.Currencies
-            .Where(c => c.CurrencyId == valuteId).ToList();
-        foreach(var course in coursesInDb) {
-            course.Currency = listOfValutes.Where(c => c.CurrencyId == course.Currency.CurrencyId).First();
-        }
+        var coursesInDb = _currenciesRepository.SaveCourses(currencyId, FirstDate, SecondDate);
         Courses = coursesInDb;
     }
-    public void DowloandNewCourses(string valuteId, List<DateTime> listOfDates) {
+    public void DowloandNewCourses(string currencyId, List<DateTime> listOfDates) {
         string firstDateCourse = FirstDate.ToString("dd.MM.yyyy");
         string secondDateCourse = SecondDate.ToString("dd.MM.yyyy");
-        var response = _client.GetAsync($"https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={firstDateCourse}&date_req2={secondDateCourse}&VAL_NM_RQ={valuteId}").Result;
+        var response = _client.GetAsync($"https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={firstDateCourse}&date_req2={secondDateCourse}&VAL_NM_RQ={currencyId}").Result;
 
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         Encoding.GetEncoding("windows-1254");
@@ -81,7 +72,7 @@ public class DetailsModel : PageModel
             courses[i] = new Course {
                 Value = resultDictionarty.Keys.ElementAt(i),
                 Date = resultDictionarty.Values.ElementAt(i),
-                Currency = _context.Currencies.Where(i => i.CurrencyId == valuteId).First()
+                Currency = _context.Currencies.Where(i => i.CurrencyId == currencyId).First()
             };
         }
         _context.AddRange(courses);

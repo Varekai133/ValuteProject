@@ -3,7 +3,7 @@
 @{
     List<float> values = new List<float>();
     List<DateTime> dates = new List<DateTime>();
-    string valuteName = " ";
+    string currencyName = " ";
 }
 <head>
     <meta charset="utf-8" />
@@ -47,7 +47,7 @@
                 </tbody>
                 values.Add(@course.Value);
                 dates.Add(@course.Date);
-                valuteName = @course.Currency.Name;
+                currencyName = @course.Currency.Name;
             }
         </table>
     </ul>
@@ -69,7 +69,7 @@
         {
             @:datesArray.push("@d".split(' ')[0]);
         }
-        var sequence = '@valuteName'
+        var sequence = '@currencyName'
         var spaceIndex = sequence.indexOf(' ') / 7;
         var charCode = sequence.split(/[;\s]+/g)
             .filter((v) => v)

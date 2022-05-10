@@ -6,7 +6,7 @@
     List<DateTime> dates = new List<DateTime>();
     List<int> counts = new List<int>();
     List<string> names = new List<string>();
-    string valuteName = " ";
+    string currencyName = " ";
     @* List<List<Course>> test = Model.ListOfCourses; *@
 }
 <head>
@@ -20,7 +20,7 @@
 </head>
 
 <div class="text-center" style="margin-bottom: 70px">
-    @if(Model.Valutes.Count() == 0) {
+    @if(Model.Currencies.Count() == 0) {
         <p> No data </p>
     }
     <p>Курс валют по отношению к рублю</p>
@@ -35,10 +35,10 @@
             currencies.Add(course.Value);
             dates.Add(@course.Date);
             count++;
-            valuteName = @course.Currency.Name;
+            currencyName = @course.Currency.Name;
         }
         counts.Add(count);
-        names.Add(valuteName);
+        names.Add(currencyName);
     }
     <form method="post">
         <div class="form-group">
@@ -47,10 +47,10 @@
         </div>
         <button class="btn btn-secondary" style="margin-top:10px" onclick="ShowChart()">Сравнить</button>
         <ul class="list-group">
-            @foreach (var valute in Model.Valutes) {
+            @foreach (var currency in Model.Currencies) {
                 <div class="form-check" style="display: flex">
-                    <input class="form-check-input" type="checkbox" value="@valute.CurrencyId" name="checkedCheckboxes" id="flexCheckDefault" checked="true">
-                    <a href="/Details?ValuteId=@valute.CurrencyId" class="link-primary" style="margin-left: 15px;">@valute.Name</a>
+                    <input class="form-check-input" type="checkbox" value="@currency.CurrencyId" name="checkedCheckboxes" id="flexCheckDefault" checked="true">
+                    <a href="/Details?CurrencyId=@currency.CurrencyId" class="link-primary" style="margin-left: 15px;">@currency.Name</a>
                 </div>
             }
         </ul>

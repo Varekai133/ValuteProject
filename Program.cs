@@ -1,4 +1,5 @@
 using DSRProject.Data;
+using DSRProject.Servicies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<HttpClient>();
 builder.Services.AddDbContext<CurrencyDbContext>(o => o.UseSqlite("filename=Data/Database/Currency.db"));
+builder.Services.AddScoped<ICurrenciesRepository, CurrenciesRepository>();
 
 var app = builder.Build();
 
