@@ -1,13 +1,11 @@
-﻿using System.Linq;
-using System.Text;
-using DSRProject.Data;
-using DSRProject.Models;
+﻿using System.Text;
+using System.Xml.Linq;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using System.Xml.Linq;
-using System.Xml.Serialization;
+
+using DSRProject.Data;
+using DSRProject.Models;
 using DSRProject.Servicies;
 
 namespace DSRProject.Pages;
@@ -53,7 +51,7 @@ public class IndexModel : PageModel
         catch (Exception ex) {
             // exception
         }
-        var coursesInDb = _currenciesRepository.SaveCourses(currencyId, FirstDate, SecondDate);
+        var coursesInDb = _currenciesRepository.GetCourses(currencyId, FirstDate, SecondDate);
         ListOfCourses.Add(coursesInDb);
     }
     public void DowloandNewCourses(string currencyId, List<DateTime> listOfDates) {

@@ -5,16 +5,14 @@ namespace DSRProject.Servicies;
 public interface ICurrenciesRepository {
     List<Currency> GetCurrencies();
     List<DateTime> GetDates(string currencyId, DateTime firstDate, DateTime secondDate);
-    List<Course> SaveCourses(string currencyId, DateTime firstDate, DateTime secondDate);
+    List<Course> GetCourses(string currencyId, DateTime firstDate, DateTime secondDate);
 }
 public class CurrenciesRepository : ICurrenciesRepository {
     private readonly CurrencyDbContext _context;
     public CurrenciesRepository(CurrencyDbContext context) => _context = context;
-
     public List<Currency> GetCurrencies() {
         return _context.Currencies.ToList();
     }
-
     public List<DateTime> GetDates(string currencyId, DateTime firstDate, DateTime secondDate) {
         return _context.Courses
             .Where(c => c.Currency.CurrencyId == currencyId)
@@ -22,8 +20,7 @@ public class CurrenciesRepository : ICurrenciesRepository {
             .Select(e => e.Date)
             .OrderByDescending(o => o.Date).ToList();
     }
-
-    public List<Course> SaveCourses(string currencyId, DateTime firstDate, DateTime secondDate) {
+    public List<Course> GetCourses(string currencyId, DateTime firstDate, DateTime secondDate) {
         var coursesInDb = _context.Courses
             .Where(c => c.Currency.CurrencyId == currencyId)
             .Where(v => (v.Date > firstDate) && (v.Date < secondDate))
