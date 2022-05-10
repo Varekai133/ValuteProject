@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DSRProject.Data;
 
-public class ValuteDbContext : DbContext {
-    public DbSet<Valute> Valutes { get; set; }
+public class CurrencyDbContext : DbContext {
+    public DbSet<Currency> Currencies { get; set; }
     public DbSet<Course> Courses { get; set; }
-    public ValuteDbContext(DbContextOptions options) : base(options)
+    public CurrencyDbContext(DbContextOptions options) : base(options)
     {
         
     }

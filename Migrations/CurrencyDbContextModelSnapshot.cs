@@ -3,18 +3,16 @@ using System;
 using DSRProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace DSRProject.Migrations
 {
-    [DbContext(typeof(ValuteDbContext))]
-    [Migration("20220430200532_Init")]
-    partial class Init
+    [DbContext(typeof(CurrencyDbContext))]
+    partial class CurrencyDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
@@ -25,25 +23,25 @@ namespace DSRProject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CurrencyId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
                     b.Property<float>("Value")
                         .HasColumnType("REAL");
 
-                    b.Property<string>("ValuteId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("CourseId");
 
-                    b.HasIndex("ValuteId");
+                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("DSRProject.Models.Valute", b =>
+            modelBuilder.Entity("DSRProject.Models.Currency", b =>
                 {
-                    b.Property<string>("ValuteId")
+                    b.Property<string>("CurrencyId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CharCode")
@@ -60,18 +58,18 @@ namespace DSRProject.Migrations
                     b.Property<int>("NumCode")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ValuteId");
+                    b.HasKey("CurrencyId");
 
-                    b.ToTable("Valutes");
+                    b.ToTable("Currencies");
                 });
 
             modelBuilder.Entity("DSRProject.Models.Course", b =>
                 {
-                    b.HasOne("DSRProject.Models.Valute", "Valute")
+                    b.HasOne("DSRProject.Models.Currency", "Currency")
                         .WithMany()
-                        .HasForeignKey("ValuteId");
+                        .HasForeignKey("CurrencyId");
 
-                    b.Navigation("Valute");
+                    b.Navigation("Currency");
                 });
 #pragma warning restore 612, 618
         }

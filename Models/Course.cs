@@ -12,5 +12,5 @@ public class Course {
     public DateTime Date { get; set;}
     // public string ValuteFK { get; set; }
     // [ForeignKey("ValuteFK")]
-    public Valute Valute { get; set; }
+    public Currency Currency { get; set; }
 }

@@ -10,10 +10,10 @@ namespace DSRProject.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Valutes",
+                name: "Currencies",
                 columns: table => new
                 {
-                    ValuteId = table.Column<string>(type: "TEXT", nullable: false),
+                    CurrencyId = table.Column<string>(type: "TEXT", nullable: false),
                     NumCode = table.Column<int>(type: "INTEGER", nullable: false),
                     CharCode = table.Column<string>(type: "TEXT", nullable: false),
                     Nominal = table.Column<int>(type: "INTEGER", nullable: false),
@@ -21,7 +21,7 @@ namespace DSRProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Valutes", x => x.ValuteId);
+                    table.PrimaryKey("PK_Currencies", x => x.CurrencyId);
                 });
 
             migrationBuilder.CreateTable(
@@ -32,22 +32,22 @@ namespace DSRProject.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Value = table.Column<float>(type: "REAL", nullable: false),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ValuteId = table.Column<string>(type: "TEXT", nullable: true)
+                    CurrencyId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.CourseId);
                     table.ForeignKey(
-                        name: "FK_Courses_Valutes_ValuteId",
-                        column: x => x.ValuteId,
-                        principalTable: "Valutes",
-                        principalColumn: "ValuteId");
+                        name: "FK_Courses_Currencies_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currencies",
+                        principalColumn: "CurrencyId");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_ValuteId",
+                name: "IX_Courses_CurrencyId",
                 table: "Courses",
-                column: "ValuteId");
+                column: "CurrencyId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -56,7 +56,7 @@ namespace DSRProject.Migrations
                 name: "Courses");
 
             migrationBuilder.DropTable(
-                name: "Valutes");
+                name: "Currencies");
         }
     }
 }

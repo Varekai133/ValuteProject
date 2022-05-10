@@ -14,14 +14,14 @@ namespace DSRProject.Pages;
 
 public class DetailsModel : PageModel
 {
-    private readonly ValuteDbContext _context;
+    private readonly CurrencyDbContext _context;
     private HttpClient _client;
     public IEnumerable<Course> Courses { get; set; } = Enumerable.Empty<Course>();
     [BindProperty]
     public DateTime FirstDate { get; set; }
     [BindProperty]
     public DateTime SecondDate { get; set; }
-    public DetailsModel(ValuteDbContext context, HttpClient client) {
+    public DetailsModel(CurrencyDbContext context, HttpClient client) {
         _context = context;
         _client = client;
     }
@@ -35,7 +35,7 @@ public class DetailsModel : PageModel
     }
     public void GetRequiredCourses(string valuteId) {
         var listOfDates = _context.Courses
-            .Where(c => c.Valute.ValuteId == valuteId)
+            .Where(c => c.Currency.CurrencyId == valuteId)
             .Where(v => (v.Date > FirstDate) && (v.Date < SecondDate))
             .Select(e => e.Date)
             .OrderByDescending(o => o.Date).ToList();
@@ -46,13 +46,13 @@ public class DetailsModel : PageModel
             // exception
         }
         var coursesInDb = _context.Courses
-            .Where(c => c.Valute.ValuteId == valuteId)
+            .Where(c => c.Currency.CurrencyId == valuteId)
             .Where(v => (v.Date > FirstDate) && (v.Date < SecondDate))
             .OrderByDescending(o => o.Date).ToList();
-        var listOfValutes = _context.Valutes
-            .Where(c => c.ValuteId == valuteId).ToList();
+        var listOfValutes = _context.Currencies
+            .Where(c => c.CurrencyId == valuteId).ToList();
         foreach(var course in coursesInDb) {
-            course.Valute = listOfValutes.Where(c => c.ValuteId == course.Valute.ValuteId).First();
+            course.Currency = listOfValutes.Where(c => c.CurrencyId == course.Currency.CurrencyId).First();
         }
         Courses = coursesInDb;
     }
@@ -68,11 +68,12 @@ public class DetailsModel : PageModel
 
         var xmlValuesList = xml.Descendants("Value").ToList();
         var xmlDatesList = xml.Descendants("Record").Attributes("Date").ToList();
+        var xmlNominalsList = xml.Descendants("Nominal").ToList();
 
         Dictionary<float, DateTime> resultDictionarty = new();
         for (int i = 0; i < xmlDatesList.Count(); i++) {
             if (!listOfDates.Contains(DateTime.Parse(xmlDatesList.ElementAt(i).Value).Date))
-                resultDictionarty.Add(float.Parse(xmlValuesList.ElementAt(i).Value), DateTime.Parse(xmlDatesList.ElementAt(i).Value).Date);
+                resultDictionarty.Add(float.Parse(xmlValuesList.ElementAt(i).Value) / float.Parse(xmlNominalsList.ElementAt(i).Value), DateTime.Parse(xmlDatesList.ElementAt(i).Value).Date);
         }
 
         var courses = new Course[resultDictionarty.Count()];
@@ -80,7 +81,7 @@ public class DetailsModel : PageModel
             courses[i] = new Course {
                 Value = resultDictionarty.Keys.ElementAt(i),
                 Date = resultDictionarty.Values.ElementAt(i),
-                Valute = _context.Valutes.Where(i => i.ValuteId == valuteId).First()
+                Currency = _context.Currencies.Where(i => i.CurrencyId == valuteId).First()
             };
         }
         _context.AddRange(courses);

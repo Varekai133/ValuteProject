@@ -18,7 +18,9 @@
     @if(Model.Courses.Count() == 0) {
         <p> No data </p>
     }
-    <p>@Model.Courses.ElementAt(0).Valute.Name</p>
+    <a asp-page="./Index" class="btn btn-secondary" style="position: absolute; display: table;">Назад</a>
+    @* <button type="button" class="btn btn-secondary" asp-page="./Index">Назад</button> *@
+    <p>@Model.Courses.ElementAt(0).Currency.Name к рублю</p>
     <div class="mt-5">
         <form method="post">
             <div class="form-group">
@@ -40,12 +42,12 @@
                 <tbody>
                     <tr>
                     <th scope="row">@course.Date.ToShortDateString()</th>
-                    <td>@course.Value</td>
+                    <td>@course.Value руб.</td>
                     </tr>
                 </tbody>
                 values.Add(@course.Value);
                 dates.Add(@course.Date);
-                valuteName = @course.Valute.Name;
+                valuteName = @course.Currency.Name;
             }
         </table>
     </ul>
@@ -57,7 +59,6 @@
 </div>
 <script>
     $(document).ready(function() {
-        @* var a = Math.floor(@message); *@
         var valuesArray = [];
         var datesArray = [];
         @foreach (var d in values)
@@ -92,17 +93,6 @@
                 ],
                 borderWidth: 2
             },
-            @* {
-                label: "My Second dataset",
-                data: [28, 48, 40, 19, 86, 27, 90],
-                backgroundColor: [
-                'rgba(0, 137, 132, .2)',
-                ],
-                borderColor: [
-                'rgba(0, 10, 130, .7)',
-                ],
-                borderWidth: 2
-            } *@
             ]
         },
         options: {
