@@ -16323,6 +16323,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "e:\\DSRProj\\DSRProject\\Pages\\Comparison.cshtml",
+      "TargetPath": "Pages\\Comparison.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "e:\\DSRProj\\DSRProject\\Pages\\Details.cshtml",
       "TargetPath": "Pages\\Details.cshtml",
       "FileKind": "mvc"

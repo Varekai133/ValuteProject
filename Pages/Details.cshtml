@@ -16,11 +16,17 @@
 
 <div class="text-center">
     @if(Model.Courses.Count() == 0) {
-        <p> No data </p>
+        @if(Model.Message != null) {
+            <p> @Model.Message </p>
+        }
+        else {
+            <p> Нет данных </p>
+        }
     }
-    <a asp-page="./Index" class="btn btn-secondary" style="position: absolute; display: table;">Назад</a>
-    @* <button type="button" class="btn btn-secondary" asp-page="./Index">Назад</button> *@
-    <p>@Model.Courses.ElementAt(0).Currency.Name к рублю</p>
+    else {
+        <p>@Model.Courses.ElementAt(0).Currency.Name к рублю</p>
+    }
+    <a asp-page="./Index" class="btn btn-secondary" style="position: absolute; display: table; margin-top: -42px;">Назад</a>
     <div class="mt-5">
         <form method="post">
             <div class="form-group">
@@ -76,7 +82,6 @@
             .map((v) => Number.parseInt(v.replace(/&#/, '0')))
         var ASCIIName = String.fromCharCode(...charCode)
         var ASCIINameWithSpace = ASCIIName.substring(0, spaceIndex) + " " + ASCIIName.substring(spaceIndex, ASCIIName.length)
-        console.log(ASCIINameWithSpace)
         var ctxL = document.getElementById("lineChart").getContext('2d');
         var myLineChart = new Chart(ctxL, {
         type: 'line',

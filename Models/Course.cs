@@ -9,7 +9,5 @@ public class Course {
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime Date { get; set;}
-    // public string ValuteFK { get; set; }
-    // [ForeignKey("ValuteFK")]
     public Currency Currency { get; set; }
 }

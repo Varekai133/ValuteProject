@@ -10,9 +10,4 @@ public class CurrencyDbContext : DbContext {
     {
         
     }
-    // protected override void OnModelCreating(ModelBuilder modelBuilder)
-    // {
-    //     modelBuilder.Entity<Course>().ToTable("Courses");
-    //     modelBuilder.Entity<Valute>().ToTable("Valutes");
-    // }
 }

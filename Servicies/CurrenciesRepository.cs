@@ -7,9 +7,11 @@ namespace DSRProject.Servicies;
 public class CurrenciesRepository : ICurrenciesRepository {
     private readonly CurrencyDbContext _context;
     public CurrenciesRepository(CurrencyDbContext context) => _context = context;
+    
     public List<CurrencyDTO> GetCurrencies() {
         return _context.Currencies.Select(item => item.AsDto()).ToList();
     }
+
     public List<DateTime> GetDates(string currencyId, DateTime firstDate, DateTime secondDate) {
         return _context.Courses
             .Where(c => c.Currency.CurrencyId == currencyId)
@@ -30,12 +32,12 @@ public class CurrenciesRepository : ICurrenciesRepository {
         return coursesInDb.Select(item => item.AsDto()).ToList();
     }
 
-    public void SaveCourses(string currencyId, Dictionary<float, DateTime> coursesDictionarty) {
+    public void SaveCourses(string currencyId, Dictionary<DateTime, float> coursesDictionarty) {
         var courses = new Course[coursesDictionarty.Count()];
         for (int i = 0; i < coursesDictionarty.Count(); i++) {
             courses[i] = new Course {
-                Value = coursesDictionarty.Keys.ElementAt(i),
-                Date = coursesDictionarty.Values.ElementAt(i),
+                Value = coursesDictionarty.Values.ElementAt(i),
+                Date = coursesDictionarty.Keys.ElementAt(i),
                 Currency = _context.Currencies.Where(i => i.CurrencyId == currencyId).First()
             };
         }
