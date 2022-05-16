@@ -5,7 +5,7 @@ namespace DSRProject.Servicies;
 
 public class ExternalService : IExternalService {
     private readonly HttpClient _client;   
-     
+
     public ExternalService(HttpClient client) {
         _client = client;
     }
@@ -14,6 +14,7 @@ public class ExternalService : IExternalService {
         if (firstDate >= secondDate) {
             throw new Exception("Проверьте правильность введенных дат");
         }
+        
         string firstDateCourse = firstDate.ToString("dd.MM.yyyy");
         string secondDateCourse = secondDate.ToString("dd.MM.yyyy");
         var response = _client.GetAsync($"https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={firstDateCourse}&date_req2={secondDateCourse}&VAL_NM_RQ={currencyId}").Result;
@@ -21,7 +22,14 @@ public class ExternalService : IExternalService {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         Encoding.GetEncoding("windows-1254");
         var result = response.Content.ReadAsStringAsync().Result;
-        var xml = XDocument.Parse(result);
+
+        XDocument xml = new();
+        try {
+            xml = XDocument.Parse(result);
+        }
+        catch (Exception ex) {
+            throw new Exception("Невозможно загрузить данные");
+        }
 
         var xmlValuesList = xml.Descendants("Value").ToList();
         var xmlDatesList = xml.Descendants("Record").Attributes("Date").ToList();
