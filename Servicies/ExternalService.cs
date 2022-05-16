@@ -14,7 +14,7 @@ public class ExternalService : IExternalService {
         if (firstDate >= secondDate) {
             throw new Exception("Проверьте правильность введенных дат");
         }
-        
+
         string firstDateCourse = firstDate.ToString("dd.MM.yyyy");
         string secondDateCourse = secondDate.ToString("dd.MM.yyyy");
         var response = _client.GetAsync($"https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={firstDateCourse}&date_req2={secondDateCourse}&VAL_NM_RQ={currencyId}").Result;
@@ -28,7 +28,7 @@ public class ExternalService : IExternalService {
             xml = XDocument.Parse(result);
         }
         catch (Exception ex) {
-            throw new Exception("Невозможно загрузить данные");
+            throw new Exception("Невозможно загрузить новые данные");
         }
 
         var xmlValuesList = xml.Descendants("Value").ToList();
