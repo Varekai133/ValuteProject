@@ -4,8 +4,10 @@ using DSRProject.Extensions;
 using DSRProject.Models;
 
 namespace DSRProject.Servicies;
+
 public class CurrenciesRepository : ICurrenciesRepository {
     private readonly CurrencyDbContext _context;
+    
     public CurrenciesRepository(CurrencyDbContext context) => _context = context;
     
     public List<CurrencyDTO> GetCurrencies() {

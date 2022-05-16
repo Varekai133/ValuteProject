@@ -1,7 +1,4 @@
-﻿using System.Text;
-using System.Xml.Linq;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using DSRProject.Data;
@@ -14,13 +11,14 @@ public class IndexModel : PageModel
 {
     private readonly CurrencyDbContext _context;
     private HttpClient _client;
+    private readonly ICurrenciesRepository _currenciesRepository;
+    private readonly IExternalService _externalService;
+    
     public IEnumerable<CurrencyDTO> Currencies { get; set; } = Enumerable.Empty<CurrencyDTO>();
     [BindProperty]
     public DateTime FirstDate { get; set; }
     [BindProperty]
     public DateTime SecondDate { get; set; }
-    private readonly ICurrenciesRepository _currenciesRepository;
-    private readonly IExternalService _externalService;
 
     public IndexModel(CurrencyDbContext context, HttpClient client, ICurrenciesRepository currenciesRepository, IExternalService externalService) {
         _context = context;

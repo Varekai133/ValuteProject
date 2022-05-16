@@ -12,6 +12,7 @@ public class ComparisonModel : PageModel
     private HttpClient _client;
     private readonly ICurrenciesRepository _currenciesRepository;
     private readonly IExternalService _externalService;
+    
     public List<string> SelectedCourses { get; set; } = new();
     public List<List<CourseDTO>> ListOfCourses { get; set; } = new();
     [BindProperty]

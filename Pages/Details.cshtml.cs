@@ -11,13 +11,14 @@ public class DetailsModel : PageModel
 {
     private readonly CurrencyDbContext _context;
     private HttpClient _client;
+    private readonly ICurrenciesRepository _currenciesRepository;
+    private readonly IExternalService _externalService;
+
     public IEnumerable<CourseDTO> Courses { get; set; } = Enumerable.Empty<CourseDTO>();
     [BindProperty]
     public DateTime FirstDate { get; set; }
     [BindProperty]
     public DateTime SecondDate { get; set; }
-    private readonly ICurrenciesRepository _currenciesRepository;
-    private readonly IExternalService _externalService;
     public string Message { get; set; }
 
     public DetailsModel(CurrencyDbContext context, HttpClient client, ICurrenciesRepository currenciesRepository, IExternalService externalService) {

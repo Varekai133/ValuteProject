@@ -1,6 +1,7 @@
 using DSRProject.Data.DTO;
 
 namespace DSRProject.Servicies;
+
 public interface ICurrenciesRepository {
     List<CurrencyDTO> GetCurrencies();
     List<DateTime> GetDates(string currencyId, DateTime firstDate, DateTime secondDate);

@@ -2,8 +2,10 @@ using System.Text;
 using System.Xml.Linq;
 
 namespace DSRProject.Servicies;
+
 public class ExternalService : IExternalService {
-    private readonly HttpClient _client;    
+    private readonly HttpClient _client;   
+     
     public ExternalService(HttpClient client) {
         _client = client;
     }
