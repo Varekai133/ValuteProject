@@ -38,10 +38,10 @@
     <a asp-page="./Index" class="btn btn-secondary" style="position: absolute; display: table; margin-top: -42px;">Назад</a>
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="justify-content: right; margin-top: -3em;">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Таблица</button>
+            <button class="nav-link active" id="pills-table-tab" data-bs-toggle="pill" data-bs-target="#pills-table" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Таблица</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">График</button>
+            <button class="nav-link" id="pills-chart-tab" data-bs-toggle="pill" data-bs-target="#pills-chart" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">График</button>
         </li>
     </ul>
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -69,7 +69,7 @@
     </div>
     
     <div class="tab-content" id="pills-tabContent" style="padding-bottom: 3em;">
-        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <div class="tab-pane fade show active" id="pills-table" role="tabpanel" aria-labelledby="pills-table-tab">
             <ul class="list-group">
                 <table class="table table-striped" id="courseTable">
                     <thead>
@@ -78,21 +78,10 @@
                         <th scope="col" style="text-align: center;">Курс</th>
                         </tr>
                     </thead>
-                    @* @foreach (var course in Model.Courses) {
-                        <tbody>
-                            <tr>
-                            <th scope="row">@course.Date.ToShortDateString()</th>
-                            <td>@course.Value руб.</td>
-                            </tr>
-                        </tbody>
-                        values.Add(@course.Value);
-                        dates.Add(@course.Date);
-                        currencyName = @course.Currency.Name;
-                    } *@
                 </table>
             </ul>
         </div>
-        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+        <div class="tab-pane fade" id="pills-chart" role="tabpanel" aria-labelledby="pills-chart-tab">
             <div class="container my-4">
                 <div>
                     <canvas id="lineChart" style="margin-bottom: 60px;"></canvas>
