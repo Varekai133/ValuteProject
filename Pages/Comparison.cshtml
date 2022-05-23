@@ -18,18 +18,32 @@
 
 <div class="text-center" style="margin-bottom: 70px">
     @if(Model.Message != null) {
-        <p> @Model.Message </p>
+        <p style="color: red;"> @Model.Message </p>
     }
     <a asp-page="./Index" class="btn btn-secondary" style="position: absolute; display: table;">Назад</a>
     <p>Курс валют по отношению к рублю</p>
-    <div class="mt-5">
-        <form method="post">
-            <div class="form-group">
-                <input type="date" class="form-control" asp-for="FirstDate"/>
-                <input type="date" class="form-control" asp-for="SecondDate"/>
-            </div>
-            <button class="btn btn-secondary" style="margin-top: 10px;">Показать</button>
-        </form>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Выбрать период
+    </button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Период показа</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+                <div class="form-group">
+                    <input type="date" class="form-control" asp-for="FirstDate"/>
+                    <input type="date" class="form-control" asp-for="SecondDate"/>
+                </div>
+                <button class="btn btn-secondary" style="margin-top: 10px;">Показать</button>
+            </form>
+        </div>
+        </div>
+    </div>
     </div>
     <div class="container my-4">
         <div>
